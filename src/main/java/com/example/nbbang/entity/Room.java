@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +33,16 @@ public class Room {
     @Column
     private Long leader;
 
+    @Column
+    private String code;
+
+    @PrePersist
+    public void createCode(){
+        String randomcode = UUID.randomUUID().toString().replaceAll("-", "");
+        code = randomcode;
+    }
+
     public static Room createRoom(RoomDto dto) {
-        return new Room(dto.getId(), dto.getInfo(), dto.isShow(), dto.getTitle(), dto.getLeader());
+        return new Room(dto.getId(), dto.getInfo(), dto.isShow(), dto.getTitle(), dto.getLeader(), dto.getCode());
     }
 }

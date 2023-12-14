@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
     Optional<Room> findById(Long id);
+    Optional<Room> findByCode(String code);
 }

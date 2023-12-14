@@ -16,8 +16,9 @@ public class RoomDto {
     private boolean show;
     private String title;
     private Long leader;
+    private String code;
 
     public static RoomDto createRoomDto(Room room) {
-        return new RoomDto(room.getId(), room.getInfo(), room.isShow(), room.getTitle(), room.getLeader());
+        return new RoomDto(room.getId(), room.getInfo(), room.isShow(), room.getTitle(), room.getLeader(), room.getCode());
     }
 }
