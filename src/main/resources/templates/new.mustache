@@ -11,7 +11,7 @@
         <input type="checkbox" id="room-show">
         <input type="hidden" id="room-leader" value="{{leader}}">
     </div>
-    <button type="submit" class="btn btn-primary" id="create-room-button">방 만들기</button>
+    <button type="button" class="btn btn-primary btn-sm" id="create-room-button">방 만들기</button>
 </form>
 
 <script>
@@ -42,10 +42,11 @@
                             headers: {
                                 "Content-Type": "application/json"
                             }
+                        }).then(response => {
+                            const msg = (response.ok) ? "새로운 방이 만들어졌습니다." : "방 만들기 실패!";
+                            alert(msg);
+                            window.location.href="/main";
                         });
-                        const msg = (response.ok) ? "새로운 방이 만들어졌습니다." : "방 만들기 실패!";
-                        alert(msg);
-                        window.location.href="/main";
                     })
         });
     }
