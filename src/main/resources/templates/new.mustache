@@ -1,0 +1,53 @@
+{{>layouts/header}}
+<form>
+    <div class="mb-3">
+        <label class="form-label">제목</label>
+        <input type="text" class="form-control" id="room-title">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">설명</label>
+        <textarea class="form-control form-textarea" rows="5" id="room-info"></textarea>
+        <label for="singleCheckbox">공개</label>
+        <input type="checkbox" id="room-show">
+        <input type="hidden" id="room-leader" value="{{leader}}">
+    </div>
+    <button type="submit" class="btn btn-primary" id="create-room-button">방 만들기</button>
+</form>
+
+<script>
+    {
+        const roomCreateBtn = document.querySelector("#create-room-button")
+        roomCreateBtn.addEventListener("click", function(){
+            const room = {
+                title: document.querySelector("#room-title").value,
+                info: document.querySelector("#room-info").value,
+                show: document.querySelector("#room-show").checked,
+                leader: document.querySelector("#room-leader").value
+            };
+            const url = "/api/room";
+            fetch(url, {
+                method: "post",
+                body: JSON.stringify(room),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => response.json())
+                    .then(data => {
+                        const relation = {
+                        };
+                        const url = "/api/userroom/" + document.querySelector("#room-leader").value + "/" + data.id;
+                        fetch(url, {
+                            method: "post",
+                            body: JSON.stringify(relation),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        });
+                        const msg = (response.ok) ? "새로운 방이 만들어졌습니다." : "방 만들기 실패!";
+                        alert(msg);
+                        window.location.href="/main";
+                    })
+        });
+    }
+</script>
+{{>layouts/footer}}
