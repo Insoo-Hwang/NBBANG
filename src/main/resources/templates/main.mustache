@@ -146,13 +146,18 @@
 
 <div id="rooms-list">
     {{#roomDtos}}
-        <div class="card mb-3" id="rooms-{{id}}">
+        <div class="card mb-3" id="rooms-{{id}}" style="cursor: pointer" onclick="goToRoom({{id}})">
             <div class="card-body">
-                <h3 class="card-title">{{title}}</h3>
+                <h3 class="card-title" style="font-weight: bold">{{title}}</h3>
                 <p class="card-text">{{info}}</p>
             </div>
         </div>
     {{/roomDtos}}
+    <script>
+        function goToRoom(id){
+            window.location.href='/room/'+id;
+        }
+    </script>
 </div>
 
 <div id="fixed-buttons">
@@ -185,19 +190,24 @@
 </div>
 
 <script>
-    {
-        //모달 요소 선택
-        const commentEditModal = document.querySelector("#code-modal");
-        console.log("####");
-        //모달 이벤트 감지
-        commentEditModal.addEventListener('show.bs.modal', function(event){
-         //트리거 버튼 선택
-          const triggerBtn = event.relatedTarget;
-         //데이터 반영
-        });
-    }
+    const codeBtn = document.querySelector("#code-btn");
+    codeBtn.addEventListener("click", function() {
+        const code = document.querySelector("#code").value;
+        const url = "/api/room/" + code;
+        fetch(url, {
+            method: "GET",
+            headers: {
+
+            }
+        }).then(response => response.json())
+                .then(data => {
+                    window.location.href = `/room/${data.id}`;
+                });
+    });
+</script>
+<script>
     function toPage(){
-        window.location.href = '/test/page';
+        window.location.href = '/find';
     }
 </script>
 

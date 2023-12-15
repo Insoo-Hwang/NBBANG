@@ -45,7 +45,7 @@
                         }).then(response => {
                             const msg = (response.ok) ? "새로운 방이 만들어졌습니다." : "방 만들기 실패!";
                             alert(msg);
-                            window.location.href="/main";
+                            window.location.href=`/room/${data.id}`;
                         });
                     })
         });

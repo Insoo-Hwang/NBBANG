@@ -1,6 +1,6 @@
 package com.example.nbbang.api;
 
-import com.example.nbbang.dto.AddUserRequest;
+import com.example.nbbang.dto.UserDto;
 import com.example.nbbang.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ public class UserApiController {
     private final UserService userService;
 
     @PostMapping("/user")
-    public String signup(AddUserRequest request){
+    public String signup(UserDto request){
         userService.save(request);
         return "redirect:/login";
     }

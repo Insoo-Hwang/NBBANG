@@ -1,6 +1,7 @@
 package com.example.nbbang.service;
 
 import com.example.nbbang.dto.RoomDto;
+import com.example.nbbang.dto.UserDto;
 import com.example.nbbang.entity.Room;
 import com.example.nbbang.entity.User;
 import com.example.nbbang.entity.UserRoomRelation;
@@ -41,6 +42,40 @@ public class RoomService {
                 .map(UserRoomRelation::getRoom)
                 .collect(Collectors.toList());
         return found.stream()
+                .map(room -> RoomDto.createRoomDto(room))
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDto> getUsers(Long id){
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException());
+        List<UserRoomRelation> userRoomRelations = userRoomRelationRepository.findByRoom(room);
+        List<User> found = userRoomRelations.stream()
+                .map(UserRoomRelation::getUser)
+                .collect(Collectors.toList());
+        return found.stream()
+                .map(user -> UserDto.createUserDto(user))
+                .collect(Collectors.toList());
+    }
+
+    public RoomDto show(Long id){
+        return RoomDto.createRoomDto(roomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
+    }
+
+    public RoomDto findByCode(String code){
+        return RoomDto.createRoomDto(roomRepository.findByCode(code).orElseThrow(() -> new IllegalArgumentException()));
+    }
+
+    @Transactional
+    public RoomDto delete(Long id){
+        Room target = roomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+        roomRepository.delete(target);
+        return RoomDto.createRoomDto(target);
+    }
+
+    public List<RoomDto> findByShow(){
+        return roomRepository.findByShow()
+                .stream()
                 .map(room -> RoomDto.createRoomDto(room))
                 .collect(Collectors.toList());
     }

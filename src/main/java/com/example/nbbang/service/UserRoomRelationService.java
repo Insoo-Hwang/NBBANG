@@ -11,6 +11,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserRoomRelationService {
 
@@ -32,5 +35,34 @@ public class UserRoomRelationService {
         UserRoomRelation relation = UserRoomRelation.createUserRoomRelation(dto, user, room);
         UserRoomRelation created = userRoomRelationRepository.save(relation);
         return UserRoomRelationDto.createUserRoomRelationDto(created);
+    }
+
+    public UserRoomRelationDto showRelation(Long userId, Long roomId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException());
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException());
+        UserRoomRelation relation = userRoomRelationRepository.findByUserAndRoom(user, room);
+        if(relation != null) {
+            return UserRoomRelationDto.createUserRoomRelationDto(relation);
+        }
+        else
+            return null;
+    }
+
+    @Transactional
+    public UserRoomRelationDto deleteRelation(Long userId, Long roomId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException());
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException());
+        UserRoomRelation relation = userRoomRelationRepository.findByUserAndRoom(user, room);
+        if(relation != null) {
+            userRoomRelationRepository.delete(relation);
+            return UserRoomRelationDto.createUserRoomRelationDto(relation);
+        }
+        else{
+            return null;
+        }
     }
 }

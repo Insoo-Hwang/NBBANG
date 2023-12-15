@@ -2,7 +2,7 @@ package com.example.nbbang.service;
 
 import com.example.nbbang.repository.UserRepository;
 import com.example.nbbang.entity.User;
-import com.example.nbbang.dto.AddUserRequest;
+import com.example.nbbang.dto.UserDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +16,7 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public Long save(AddUserRequest dto){
+    public Long save(UserDto dto){
         return userRepository.save(User.builder()
                 .email(dto.getEmail())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))

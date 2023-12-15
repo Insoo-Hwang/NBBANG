@@ -1,0 +1,15 @@
+{{>layouts/header}}
+{{#publicDtos}}
+    <div class="card mb-3" id="public-card" style="cursor: pointer" onclick="goToRoom({{id}})">
+        <div class="card-body" id="public-card-body">
+            <h3 class="card-title">{{title}}</h3>
+            <p class="card-text">{{info}}</p>
+        </div>
+    </div>
+{{/publicDtos}}
+<script>
+    function goToRoom(id){
+        window.location.href='/room/'+ id;
+    }
+</script>
+{{>layouts/footer}}

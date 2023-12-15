@@ -19,7 +19,7 @@ public class TestController {
             String nickname = ((User) userDetails).getNickname();
             model.addAttribute("nickname", nickname);
         }
-        return "main";
+        return "room";
     }
 
     @GetMapping("/test/page")
