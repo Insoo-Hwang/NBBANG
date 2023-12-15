@@ -39,4 +39,10 @@ public class RoomApiController {
         List<RoomDto> dtos = roomService.findByShow();
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
+
+    @PatchMapping("/api/room/{id}")
+    public ResponseEntity<RoomDto> update(@PathVariable Long id, @RequestBody RoomDto dto){
+        RoomDto updated = roomService.update(id, dto);
+        return ResponseEntity.status(HttpStatus.OK).body(updated);
+    }
 }

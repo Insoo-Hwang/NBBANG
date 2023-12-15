@@ -79,4 +79,12 @@ public class RoomService {
                 .map(room -> RoomDto.createRoomDto(room))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public RoomDto update(Long id, RoomDto dto){
+        Room target = roomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+        target.patch(dto);
+        Room updated = roomRepository.save(target);
+        return RoomDto.createRoomDto(updated);
+    }
 }

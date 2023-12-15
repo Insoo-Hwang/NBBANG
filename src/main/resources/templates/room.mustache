@@ -11,6 +11,9 @@
     </div>
     <button type="button" id="join-button">파티 참여하기</button>
     <button type="button" id="bye-button">파티 탈퇴하기</button>
+    <button type="button" id="edit-button"
+            data-bs-toggle="modal"
+            data-bs-target="#edit-modal">파티 수정하기</button>
     <div style="text-align: center">참여 인원</div>
     {{#userDtos}}
     <div class="card mb-3">
@@ -114,5 +117,73 @@
         });
     }
 </script>
+<!-- Modal -->
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">방 정보 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">제목</label>
+                        <input class="form-control form-control-sm" id="edit-title">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">설명</label>
+                        <textarea class="form-control form-control-sm" rows="3" id="edit-info"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">공개</label>
+                        <input type="checkbox" id="edit-show" class="form-check-input">
+                    </div>
+                    <input type="hidden" id="edit-code" value="{{code}}">
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="update-btn">수정 완료</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    {
+        const commentEditModal = document.querySelector("#edit-modal");
+        commentEditModal.addEventListener('show.bs.modal', function(event){
+            document.querySelector("#edit-title").value = {{title}};
+            document.querySelector("#edit-info").value = {{info}};
+            document.querySelector("#edit-show").checked = {{show}};
+        });
+    }
+
+{
+    const updateBtn = document.querySelector("#update-btn");
+    updateBtn.addEventListener("click", function (){
+        console.log(document.querySelector("#edit-code").value);
+        const room = {
+            id: {{id}},
+            leader: {{leader}},
+            code: document.querySelector("#edit-code").value,
+            info: document.querySelector("#edit-info").value,
+            title: document.querySelector("#edit-title").value,
+            show: document.querySelector("#edit-show").checked
+        };
+
+        const url = "/api/room/" + room.id;
+        fetch(url, {
+            method: "PATCH",
+            body: JSON.stringify(room),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            const msg = (response.ok) ? "정보가 수정되었습니다!" : "수정 실패!";
+            alert(msg);
+            window.location.reload();
+        });
+    });
+}
+</script>
+
 {{/dto}}
 {{>layouts/footer}}

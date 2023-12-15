@@ -45,4 +45,11 @@ public class Room {
     public static Room createRoom(RoomDto dto) {
         return new Room(dto.getId(), dto.getInfo(), dto.isShow(), dto.getTitle(), dto.getLeader(), dto.getCode());
     }
+
+    public void patch(RoomDto dto) {
+        if(this.id != dto.getId()) throw new IllegalArgumentException();
+        if(dto.getTitle() != null) this.title = dto.getTitle();
+        if(dto.getInfo() != null) this.info = dto.getInfo();
+        this.show = dto.isShow();
+    }
 }
