@@ -14,6 +14,8 @@
     <button type="button" id="edit-button"
             data-bs-toggle="modal"
             data-bs-target="#edit-modal">파티 수정하기</button>
+    <input type="hidden" id="userId" value="{{userId}}">
+    <input type="hidden" id="leaderId" value="{{leader}}">
     <div style="text-align: center">참여 인원</div>
     {{#userDtos}}
     <div class="card mb-3">
@@ -159,28 +161,34 @@
 {
     const updateBtn = document.querySelector("#update-btn");
     updateBtn.addEventListener("click", function (){
-        console.log(document.querySelector("#edit-code").value);
-        const room = {
-            id: {{id}},
-            leader: {{leader}},
-            code: document.querySelector("#edit-code").value,
-            info: document.querySelector("#edit-info").value,
-            title: document.querySelector("#edit-title").value,
-            show: document.querySelector("#edit-show").checked
-        };
+        const compare1 = document.querySelector("#userId").value;
+        const compare2 = document.querySelector("#leaderId").value;
+        if(compare1 == compare2) {
+            const room = {
+                id: {{id}},
+                leader: {{leader}},
+                code: document.querySelector("#edit-code").value,
+                info: document.querySelector("#edit-info").value,
+                title: document.querySelector("#edit-title").value,
+                show: document.querySelector("#edit-show").checked
+            };
 
-        const url = "/api/room/" + room.id;
-        fetch(url, {
-            method: "PATCH",
-            body: JSON.stringify(room),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(response => {
-            const msg = (response.ok) ? "정보가 수정되었습니다!" : "수정 실패!";
-            alert(msg);
-            window.location.reload();
-        });
+            const url = "/api/room/" + room.id;
+            fetch(url, {
+                method: "PATCH",
+                body: JSON.stringify(room),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                const msg = (response.ok) ? "정보가 수정되었습니다!" : "수정 실패!";
+                alert(msg);
+                window.location.reload();
+            });
+        }
+        else{
+            alert("수정 권한이 없습니다!");
+        }
     });
 }
 </script>
