@@ -1,8 +1,10 @@
 package com.example.nbbang.controller;
 
+import com.example.nbbang.dto.ArticleDto;
 import com.example.nbbang.dto.RoomDto;
 import com.example.nbbang.dto.UserDto;
 import com.example.nbbang.entity.User;
+import com.example.nbbang.service.ArticleService;
 import com.example.nbbang.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,9 @@ public class PageController {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private ArticleService articleService;
 
     @GetMapping("/main")
     public String showMain(Model model){
@@ -52,6 +57,8 @@ public class PageController {
         model.addAttribute("dto", dto);
         List<UserDto> userDtos = roomService.getUsers(id);
         model.addAttribute("userDtos", userDtos);
+        List<ArticleDto> articleDtos = articleService.articles(id);
+        model.addAttribute("articleDtos", articleDtos);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
