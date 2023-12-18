@@ -1,11 +1,11 @@
 package com.example.nbbang.controller;
 
-import com.example.nbbang.dto.ArticleDto;
-import com.example.nbbang.dto.RoomDto;
-import com.example.nbbang.dto.UserDto;
+import com.example.nbbang.dto.*;
 import com.example.nbbang.entity.User;
 import com.example.nbbang.service.ArticleService;
 import com.example.nbbang.service.RoomService;
+import com.example.nbbang.service.ScheduleService;
+import com.example.nbbang.service.UserScheduleRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +25,12 @@ public class PageController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private ScheduleService scheduleService;
+
+    @Autowired
+    private UserScheduleRelationService userScheduleRelationService;
 
     @GetMapping("/main")
     public String showMain(Model model){
@@ -59,6 +65,8 @@ public class PageController {
         model.addAttribute("userDtos", userDtos);
         List<ArticleDto> articleDtos = articleService.articles(id);
         model.addAttribute("articleDtos", articleDtos);
+        List<ScheduleDto> scheduleDtos = scheduleService.schedules(id);
+        model.addAttribute("scheduleDtos", scheduleDtos);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -73,5 +81,18 @@ public class PageController {
         List<RoomDto> publicDtos = roomService.findByShow();
         model.addAttribute("publicDtos", publicDtos);
         return "find";
+    }
+
+    @GetMapping("/schedule/{scheduleId}/{roomId}")
+    public String showSchedule(@PathVariable Long scheduleId, @PathVariable Long roomId, Model model){
+        RoomDto roomDto = roomService.show(roomId);
+        model.addAttribute("roomDto", roomDto);
+        ScheduleDto scheduleDto = scheduleService.schedule(scheduleId);
+        model.addAttribute("scheduleDto", scheduleDto);
+        List<UserDto> alreadyUserDtos = userScheduleRelationService.showRelationBySchedule(scheduleId);
+        model.addAttribute("alreadyUserDtos", alreadyUserDtos);
+        List<UserDto> totalUserDtos = roomService.getUsers(roomId);
+        model.addAttribute("totalUserDtos", totalUserDtos);
+        return "schedule";
     }
 }

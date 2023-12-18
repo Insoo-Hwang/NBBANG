@@ -13,6 +13,5 @@ public interface UserRoomRelationRepository extends JpaRepository<UserRoomRelati
 
     List<UserRoomRelation> findByRoom(Room room);
 
-
     UserRoomRelation findByUserAndRoom(User user, Room room);
 }

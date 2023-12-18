@@ -24,6 +24,20 @@
         </div>
     </div>
     {{/userDtos}}
+    <div style="text-align: center">N빵 목록</div>
+    <button type="button" id="join-button"
+            data-bs-toggle="modal"
+            data-bs-target="#schedule-modal">N빵 만들기</button>
+    {{#scheduleDtos}}
+        <div class="card mb-3">
+            <div class="card-content-article" style="text-align: center; font-size: 1.0em">
+                {{date}} {{money}}원
+                <input type="hidden" id="show-info-{{id}}" value="{{info}}">
+                <button type="button" id="manage-schedule-button" onclick="goToSchedule({{id}})">관리</button>
+                <button type="button" id="show-info-button" onclick="showInfo({{id}})" style="margin-right: 10px">정보</button>
+            </div>
+        </div>
+    {{/scheduleDtos}}
     <div style="text-align: center">한 마디 게시판</div>
     <textarea class="form-control form-control-sm" rows="1" id="article-text" style="margin-bottom: 10px"></textarea>
     <button type="button" id="add-article-button">게시글 작성하기</button>
@@ -183,6 +197,37 @@
         }
     }
 </script>
+<script>
+    {
+        function showInfo(scheduleId){
+            console.log(scheduleId);
+            const info = document.querySelector(`#show-info-${scheduleId}`).value;
+            const url = "/api/userschedule/" + {{userId}} + "/" + scheduleId;
+            fetch(url, {
+                method: "GET",
+                headers: {}
+            }).then(response => response.json())
+                    .then(data => {
+                        confirm(info);
+                    })
+                    .catch(error => {
+                        alert("권한이 없습니다!");
+                    });
+        }
+    }
+</script>
+<script>
+    {
+        function goToSchedule(scheduleId) {
+            if({{leader}} != {{userId}}){
+                alert("권한이 없습니다!");
+                return;
+            }
+            const url = "/schedule/" + scheduleId + "/" + {{id}};
+            window.location.href = url;
+        }
+    }
+</script>
 <!-- Modal -->
 <div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -255,6 +300,74 @@
         }
     });
 }
+</script>
+
+<div class="modal fade" id="schedule-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">N빵 만들기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">주기</label>
+                        <input class="form-control form-control-sm" id="add-date">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">금액</label>
+                        <input type="number" class="form-control form-control-sm" id="add-money">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">설명</label>
+                        <textarea class="form-control form-control-sm" rows="3" id="add-info"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="add-btn">생성</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    {
+        const addBtn = document.querySelector("#add-btn");
+        addBtn.addEventListener("click", function (){
+            if({{leader}} != {{userId}}){
+                alert("권한이 없습니다!");
+                return;
+            }
+            const schedule = {
+                date: document.querySelector("#add-date").value,
+                money: document.querySelector("#add-money").value,
+                info: document.querySelector("#add-info").value,
+            };
+            const url = "/api/schedule/" + {{id}};
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(schedule),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => response.json())
+                    .then(data => {
+                        const relation = {
+                        }
+                        const url = "/api/userschedule/" + {{leader}} + "/" + data.id;
+                        fetch(url, {
+                            method: "POST",
+                            body: JSON.stringify(relation),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        }).then(response => {
+                            const msg = (response.ok) ? "추가 되었습니다!" : "추가 실패!";
+                            alert(msg);
+                            window.location.reload();
+                        });
+                    });
+        });
+    }
 </script>
 
 {{/dto}}

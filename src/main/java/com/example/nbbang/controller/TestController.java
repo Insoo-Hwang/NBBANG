@@ -24,6 +24,6 @@ public class TestController {
 
     @GetMapping("/test/page")
     public String showMain2(){
-        return "page";
+        return "schedule";
     }
 }

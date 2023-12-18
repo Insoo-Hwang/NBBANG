@@ -1,0 +1,184 @@
+{{>layouts/header}}
+<div class="card-container">
+    {{#roomDto}}
+        <input type="hidden" id="roomId" value="{{id}}">
+        <input type="hidden" id="leader" value="{{leader}}">
+    <a href="/room/{{id}}">
+        <button type="button" id="join-button" >파티로 돌아가기</button>
+    </a>
+    {{/roomDto}}
+    <button type="button" id="bye-button" onclick="deleteAllRelation()">N빵 삭제하기</button>
+    <button type="button" id="edit-button"
+            data-bs-toggle="modal"
+            data-bs-target="#edit-modal">N빵 수정하기</button>
+    {{#scheduleDto}}
+        <input type="hidden" id="id" value="{{id}}">
+        <input type="hidden" id="date" value="{{date}}">
+        <input type="hidden" id="money" value="{{money}}">
+        <input type="hidden" id="info" value="{{info}}">
+    {{/scheduleDto}}
+    <div style="text-align: center">참여 중인 인원</div>
+    {{#alreadyUserDtos}}
+        <div class="card mb-3">
+            <div class="card-content">
+                {{nickname}}
+                <button type="button" id="delete-article-button" style="width: 20px" onclick="deleteUser({{id}})">-</button>
+            </div>
+        </div>
+    {{/alreadyUserDtos}}
+    <div style="text-align: center">전체 인원</div>
+    {{#totalUserDtos}}
+        <div class="card mb-3">
+            <div class="card-content">
+                {{nickname}}
+                <button type="button" id="show-info-button" style="width: 20px;" onclick="addUser({{id}})">+</button>
+            </div>
+        </div>
+    {{/totalUserDtos}}
+</div>
+<script>
+    {
+        function deleteAllRelation() {
+            const id = document.querySelector("#id").value;
+            const url = "/api/userschedule/all/" + id;
+            fetch(url, {
+                method: "DELETE",
+                headers: {}
+            }).then(response => {
+                if(response.ok){
+                    deleteSchedule();
+                }
+            })
+        }
+    }
+    {
+        function deleteSchedule() {
+            const id = document.querySelector("#id").value;
+            const roomId = document.querySelector("#roomId").value;
+            const url = "/api/schedule/" + id;
+            fetch(url, {
+                method: "DELETE",
+                headers: {}
+            }).then(response => {
+                const msg = (response.ok) ? "삭제 되었습니다!" : "삭제 실패!";
+                alert(msg);
+                if(response.ok) {
+                    window.location.href = "/room/" + roomId;
+                }
+            });
+        }
+    }
+    {
+        function addUser(userId){
+            const scheduleId = document.querySelector("#id").value;
+            const url = "/api/userschedule/" + userId + "/" + scheduleId;
+            fetch(url, {
+                method: "GET",
+                headers: {}
+            }).then(response => response.json())
+                    .then(data => {
+                        alert("이미 추가된 사용자입니다!");
+                    })
+                    .catch(error => {
+                        const relation = {
+                        }
+                        const url = "/api/userschedule/" + userId + "/" + scheduleId;
+                        fetch(url, {
+                            method: "POST",
+                            body: JSON.stringify(relation),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        }).then(response => {
+                            const msg = (response.ok) ? "추가 되었습니다!" : "추가 실패!";
+                            alert(msg);
+                            window.location.reload();
+                        });
+                    });
+        }
+    }
+    {
+        function deleteUser(userId) {
+            const id = document.querySelector("#id").value;
+            const leader = document.querySelector("#leader").value;
+            if(userId == leader){
+                alert("자기 자신은 제외할 수 없습니다!");
+                return;
+            }
+            const url = "/api/userschedule/" + userId + "/" + id;
+            fetch(url, {
+                method: "DELETE",
+                headers: {}
+            }).then(response => {
+                const msg = (response.ok) ? "삭제 되었습니다!" : "삭제 실패!";
+                alert(msg);
+                window.location.reload();
+            });
+        }
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">N빵 정보 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">주기</label>
+                        <input class="form-control form-control-sm" id="edit-date">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">금액</label>
+                        <input type="number" class="form-control form-control-sm" id="edit-money"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">정보</label>
+                        <textarea class="form-control form-control-sm" rows="3" id="edit-info"></textarea>
+                    </div>
+                    <input type="hidden" id="edit-id">
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="update-btn">수정 완료</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    {
+        const scheduleEditModal = document.querySelector("#edit-modal");
+        scheduleEditModal.addEventListener('show.bs.modal', function(event){
+            document.querySelector("#edit-date").value = document.querySelector("#date").value;
+            document.querySelector("#edit-money").value = document.querySelector("#money").value;
+            document.querySelector("#edit-info").value = document.querySelector("#info").value;
+            document.querySelector("#edit-id").value = document.querySelector("#id").value;
+        });
+    }
+    {
+        const updateBtn = document.querySelector("#update-btn");
+        updateBtn.addEventListener("click", function (){
+            const schedule = {
+                id: document.querySelector("#edit-id").value,
+                date: document.querySelector("#edit-date").value,
+                money: document.querySelector("#edit-money").value,
+                info: document.querySelector("#edit-info").value
+            };
+            const url = "/api/schedule/" + schedule.id;
+            fetch(url, {
+                method: "PATCH",
+                body: JSON.stringify(schedule),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                const msg = (response.ok) ? "정보가 수정되었습니다!" : "수정 실패!";
+                alert(msg);
+                window.location.reload();
+            });
+        });
+    }
+</script>
+{{>layouts/footer}}

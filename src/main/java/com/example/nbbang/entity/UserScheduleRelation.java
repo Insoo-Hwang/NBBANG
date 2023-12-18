@@ -1,6 +1,6 @@
 package com.example.nbbang.entity;
 
-import com.example.nbbang.dto.ArticleDto;
+import com.example.nbbang.dto.UserScheduleRelationDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,24 +12,21 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article {
+public class UserScheduleRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
-
-    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
-    private String content;
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 
-    public static Article createArticle(ArticleDto dto, Room room, User user) {
-        return new Article(dto.getId(), room, user, dto.getContent());
+    public static UserScheduleRelation createUserScheduleRelation(UserScheduleRelationDto dto, User user, Schedule schedule){
+        return new UserScheduleRelation(dto.getId(), user, schedule);
     }
 }

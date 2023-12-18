@@ -12,13 +12,16 @@ import lombok.ToString;
 @Getter
 @ToString
 public class UserRoomRelationDto {
+
     private Long id;
+
     @JsonProperty("user_id")
     private Long userId;
+
     @JsonProperty("room_id")
     private Long roomId;
 
-    public static UserRoomRelationDto createUserRoomRelationDto(UserRoomRelation created) {
-        return new UserRoomRelationDto(created.getId(), created.getUser().getId(), created.getRoom().getId());
+    public static UserRoomRelationDto createUserRoomRelationDto(UserRoomRelation relation) {
+        return new UserRoomRelationDto(relation.getId(), relation.getUser().getId(), relation.getRoom().getId());
     }
 }
