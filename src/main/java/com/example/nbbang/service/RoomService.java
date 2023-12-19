@@ -34,29 +34,7 @@ public class RoomService {
         return RoomDto.createRoomDto(created);
     }
 
-    public List<RoomDto> getRooms(Long id){
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException());
-        List<UserRoomRelation> userRoomRelations = userRoomRelationRepository.findByUser(user);
-        List<Room> found = userRoomRelations.stream()
-                .map(UserRoomRelation::getRoom)
-                .collect(Collectors.toList());
-        return found.stream()
-                .map(room -> RoomDto.createRoomDto(room))
-                .collect(Collectors.toList());
-    }
 
-    public List<UserDto> getUsers(Long id){
-        Room room = roomRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException());
-        List<UserRoomRelation> userRoomRelations = userRoomRelationRepository.findByRoom(room);
-        List<User> found = userRoomRelations.stream()
-                .map(UserRoomRelation::getUser)
-                .collect(Collectors.toList());
-        return found.stream()
-                .map(user -> UserDto.createUserDto(user))
-                .collect(Collectors.toList());
-    }
 
     public RoomDto show(Long id){
         return RoomDto.createRoomDto(roomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));

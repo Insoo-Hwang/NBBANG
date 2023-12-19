@@ -2,10 +2,7 @@ package com.example.nbbang.controller;
 
 import com.example.nbbang.dto.*;
 import com.example.nbbang.entity.User;
-import com.example.nbbang.service.ArticleService;
-import com.example.nbbang.service.RoomService;
-import com.example.nbbang.service.ScheduleService;
-import com.example.nbbang.service.UserScheduleRelationService;
+import com.example.nbbang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +27,9 @@ public class PageController {
     private ScheduleService scheduleService;
 
     @Autowired
+    private UserRoomRelationService userRoomRelationService;
+
+    @Autowired
     private UserScheduleRelationService userScheduleRelationService;
 
     @GetMapping("/main")
@@ -39,7 +39,7 @@ public class PageController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String nickname = ((User) userDetails).getNickname();
             Long id = ((User) userDetails).getId();
-            List<RoomDto> roomDtos = roomService.getRooms(id);
+            List<RoomDto> roomDtos = userRoomRelationService.getRooms(id);
             model.addAttribute("roomDtos", roomDtos);
             model.addAttribute("nickname", nickname);
         }
@@ -59,9 +59,9 @@ public class PageController {
 
     @GetMapping("/room/{id}")
     public String showRoom(@PathVariable Long id, Model model){
-        RoomDto dto = roomService.show(id);
-        model.addAttribute("dto", dto);
-        List<UserDto> userDtos = roomService.getUsers(id);
+        RoomDto roomDto = roomService.show(id);
+        model.addAttribute("roomDto", roomDto);
+        List<UserDto> userDtos = userRoomRelationService.getUsers(id);
         model.addAttribute("userDtos", userDtos);
         List<ArticleDto> articleDtos = articleService.articles(id);
         model.addAttribute("articleDtos", articleDtos);
@@ -91,7 +91,7 @@ public class PageController {
         model.addAttribute("scheduleDto", scheduleDto);
         List<UserDto> alreadyUserDtos = userScheduleRelationService.showRelationBySchedule(scheduleId);
         model.addAttribute("alreadyUserDtos", alreadyUserDtos);
-        List<UserDto> totalUserDtos = roomService.getUsers(roomId);
+        List<UserDto> totalUserDtos = userRoomRelationService.getUsers(roomId);
         model.addAttribute("totalUserDtos", totalUserDtos);
         return "schedule";
     }

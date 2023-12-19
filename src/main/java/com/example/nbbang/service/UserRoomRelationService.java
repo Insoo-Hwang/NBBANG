@@ -1,5 +1,7 @@
 package com.example.nbbang.service;
 
+import com.example.nbbang.dto.RoomDto;
+import com.example.nbbang.dto.UserDto;
 import com.example.nbbang.dto.UserRoomRelationDto;
 import com.example.nbbang.entity.Room;
 import com.example.nbbang.entity.User;
@@ -64,5 +66,29 @@ public class UserRoomRelationService {
         else{
             return null;
         }
+    }
+
+    public List<RoomDto> getRooms(Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException());
+        List<UserRoomRelation> userRoomRelations = userRoomRelationRepository.findByUser(user);
+        List<Room> found = userRoomRelations.stream()
+                .map(UserRoomRelation::getRoom)
+                .collect(Collectors.toList());
+        return found.stream()
+                .map(room -> RoomDto.createRoomDto(room))
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDto> getUsers(Long id){
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException());
+        List<UserRoomRelation> userRoomRelations = userRoomRelationRepository.findByRoom(room);
+        List<User> found = userRoomRelations.stream()
+                .map(UserRoomRelation::getUser)
+                .collect(Collectors.toList());
+        return found.stream()
+                .map(user -> UserDto.createUserDto(user))
+                .collect(Collectors.toList());
     }
 }
