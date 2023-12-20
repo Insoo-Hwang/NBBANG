@@ -35,6 +35,7 @@ OTT 계정 공유 또는 모임 금액 분할 관리 서비스를 제공하는 �
   #### Users DB
   ![image](https://github.com/Insoo-Hwang/NBBANG/assets/70841847/e132e89f-a625-4d89-9c44-d42c2ab3b57d)
   * User 정보 저장
+  * Spring Security Session방식 활용
 
   ### ✊ 2. 메인 화면
   #### 메인 화면
