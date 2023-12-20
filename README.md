@@ -172,4 +172,4 @@ OTT 계정 공유 또는 모임 금액 분할 관리 서비스를 제공하는 �
  
   #### Article DB
   ![image](https://github.com/Insoo-Hwang/NBBANG/assets/70841847/e8ae0dfe-99ff-4a72-834e-634f8ce5a8ff)
-  * 작성한 Article에 관한 정보 저장장
+  * 작성한 Article에 관한 정보 저장
