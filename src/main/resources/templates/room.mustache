@@ -13,7 +13,13 @@
         <button type="button" id="bye-button">파티 탈퇴하기</button>
         <button type="button" id="edit-button"
                 data-bs-toggle="modal"
-                data-bs-target="#edit-modal">파티 수정하기</button>
+                data-bs-target="#edit-modal"
+                data-bs-id="{{id}}"
+                data-bs-title="{{title}}"
+                data-bs-info="{{info}}"
+                data-bs-show="{{show}}"
+                data-bs-code="{{code}}"
+                data-bs-leader="{{leader}}">파티 수정하기</button>
         <input type="hidden" id="userId" value="{{userId}}">
         <input type="hidden" id="leaderId" value="{{leader}}">
         <div style="text-align: center">참여 인원</div>
@@ -258,7 +264,9 @@
                             <label class="form-label">공개</label>
                             <input type="checkbox" id="edit-show" class="form-check-input">
                         </div>
-                        <input type="hidden" id="edit-code" value="{{code}}">
+                        <input type="hidden" id="edit-id">
+                        <input type="hidden" id="edit-code">
+                        <input type="hidden" id="edit-leader">
                         <button type="button" class="btn btn-outline-primary btn-sm" id="update-btn">수정 완료</button>
                     </form>
                 </div>
@@ -269,12 +277,21 @@
         {
             const commentEditModal = document.querySelector("#edit-modal");
             commentEditModal.addEventListener('show.bs.modal', function(event){
-                document.querySelector("#edit-title").value = {{title}};
-                document.querySelector("#edit-info").value = {{info}};
-                document.querySelector("#edit-show").checked = {{show}};
+                const triggerBtn = event.relatedTarget;
+                const id = triggerBtn.getAttribute("data-bs-id");
+                const show = triggerBtn.getAttribute("data-bs-show");
+                const title = triggerBtn.getAttribute("data-bs-title");
+                const info = triggerBtn.getAttribute("data-bs-info");
+                const leader = triggerBtn.getAttribute("data-bs-leader");
+                const code = triggerBtn.getAttribute("data-bs-code");
+                document.querySelector("#edit-title").value = title;
+                document.querySelector("#edit-info").value = info;
+                document.querySelector("#edit-show").checked = show;
+                document.querySelector("#edit-id").value = id;
+                document.querySelector("#edit-leader").value = leader;
+                document.querySelector("#edit-code").value = code;
             });
         }
-
         {
             const updateBtn = document.querySelector("#update-btn");
             updateBtn.addEventListener("click", function (){
@@ -282,8 +299,8 @@
                 const compare2 = document.querySelector("#leaderId").value;
                 if(compare1 == compare2) {
                     const room = {
-                        id: {{id}},
-                        leader: {{leader}},
+                        id: document.querySelector("#edit-id").value,
+                        leader: document.querySelector("#edit-leader").value,
                         code: document.querySelector("#edit-code").value,
                         info: document.querySelector("#edit-info").value,
                         title: document.querySelector("#edit-title").value,
