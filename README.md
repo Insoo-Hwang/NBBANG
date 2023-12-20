@@ -18,6 +18,10 @@ OTT 계정 공유 또는 모임 금액 분할 관리 서비스를 제공하는 �
 
   ## 📌 주요 기능
 
+  ### 🌳 0. ERD
+  ![erd](https://github.com/Insoo-Hwang/NBBANG/assets/70841847/0dc514c3-7665-4507-82a9-65ef0b368cb0)
+
+
   ### 😀 1. 로그인/회원 가입
   #### 회원 가입
   ![image](https://github.com/Insoo-Hwang/NBBANG/assets/70841847/62dfe4cf-2676-40e2-8f7f-26fcd0daa7bd)
