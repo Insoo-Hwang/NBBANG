@@ -16,7 +16,7 @@ OTT 계정 공유 또는 모임 금액 분할 관리 서비스를 제공하는 �
 - **Database** : Postgre
 - **ORM** : Hibernate
 
-  ## 📌 주요 기능
+  ## 📌 주요 기능(Web)
 
   ### 🌳 0. ERD
   ![erd](https://github.com/Insoo-Hwang/NBBANG/assets/70841847/0dc514c3-7665-4507-82a9-65ef0b368cb0)
