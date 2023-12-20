@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ArticleApiController {
 
@@ -23,5 +25,11 @@ public class ArticleApiController {
     public ResponseEntity<ArticleDto> delete(@PathVariable Long id){
         ArticleDto deletedDto = articleService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body(deletedDto);
+    }
+
+    @GetMapping("/api/articles/{roomId}")
+    public ResponseEntity<List<ArticleDto>> articles(@PathVariable Long roomId){
+        List<ArticleDto> articleDtos = articleService.articles(roomId);
+        return ResponseEntity.status(HttpStatus.OK).body(articleDtos);
     }
 }

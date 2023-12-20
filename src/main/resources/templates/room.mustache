@@ -127,15 +127,23 @@
                 }).then(response => response.json())
                         .then(data => {
                             if({{leader}} == {{userId}}){
-                                const url = "/api/room/" + data.room_id;
+                                const url = "/api/userroom/all/" + data.room_id;
                                 fetch(url, {
                                     method: "DELETE",
-                                    headers: {
-
-                                    }
+                                    headers: {}
                                 }).then(response => {
-                                    window.location.href = "/main";
-                                });
+                                    if(response.ok){
+                                        const url = "/api/room/" + data.room_id;
+                                        fetch(url, {
+                                            method: "DELETE",
+                                            headers: {
+
+                                            }
+                                        }).then(response => {
+                                            window.location.href = "/main";
+                                        });
+                                    }
+                                })
                             }
                             alert("방에서 탈퇴했습니다!");
                             window.location.reload();

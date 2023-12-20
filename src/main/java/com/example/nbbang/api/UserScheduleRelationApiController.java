@@ -1,11 +1,14 @@
 package com.example.nbbang.api;
 
+import com.example.nbbang.dto.UserDto;
 import com.example.nbbang.dto.UserScheduleRelationDto;
 import com.example.nbbang.service.UserScheduleRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserScheduleRelationApiController {
@@ -32,8 +35,14 @@ public class UserScheduleRelationApiController {
     }
 
     @DeleteMapping("/api/userschedule/all/{scheduleId}")
-    private ResponseEntity<String> deleteAll(@PathVariable Long scheduleId){
+    public ResponseEntity<String> deleteAll(@PathVariable Long scheduleId){
         userScheduleRelationService.deleteAllByScheduleId(scheduleId);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
+    }
+
+    @GetMapping("/api/userschedule/{scheduleId}")
+    public ResponseEntity<List<UserDto>> showRelationBySchedule(@PathVariable Long scheduleId){
+        List<UserDto> dtos = userScheduleRelationService.showRelationBySchedule(scheduleId);
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.nbbang.api;
 
+import com.example.nbbang.dto.RoomDto;
+import com.example.nbbang.dto.UserDto;
 import com.example.nbbang.dto.UserRoomRelationDto;
 import com.example.nbbang.service.UserRoomRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +33,23 @@ public class UserRoomRelationApiController {
     public ResponseEntity<UserRoomRelationDto> deleteRelation(@PathVariable Long userId, @PathVariable Long roomId){
         UserRoomRelationDto dto = userRoomRelationService.deleteRelation(userId, roomId);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
+
+    @GetMapping("/api/userroom/user/{userId}")
+    public ResponseEntity<List<RoomDto>> getRooms(@PathVariable Long userId){
+        List<RoomDto> dto = userRoomRelationService.getRooms(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
+
+    @GetMapping("/api/userroom/room/{roomId}")
+    public ResponseEntity<List<UserDto>> getUsers(@PathVariable Long roomId){
+        List<UserDto> dto = userRoomRelationService.getUsers(roomId);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
+
+    @DeleteMapping("/api/userroom/all/{roomId}")
+    public ResponseEntity<String> deleteAll(@PathVariable Long roomId){
+        userRoomRelationService.deleteAllByRoomId(roomId);
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 }

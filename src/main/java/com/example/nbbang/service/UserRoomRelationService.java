@@ -91,4 +91,9 @@ public class UserRoomRelationService {
                 .map(user -> UserDto.createUserDto(user))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void deleteAllByRoomId(Long roomId){
+        userRoomRelationRepository.deleteByRoomId(roomId);
+    }
 }
