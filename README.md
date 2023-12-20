@@ -15,7 +15,7 @@ OTT 계정 공유 또는 모임 금액 분할 관리 서비스를 제공하는 �
 - **Framework** : SpringBoot 3.2.0
 - **Database** : Postgre
 - **ORM** : Hibernate
-- **WEB** : `HTML` + `JavaScript` + `CSS`
+- **Web** : `HTML` + `JavaScript` + `CSS`
 - **Android App** : `Kotlin`
 
   ## 📌 주요 기능(Web)
