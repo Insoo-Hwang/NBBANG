@@ -4,11 +4,13 @@
 SpingBoot를 활용한 플랫폼 서비스
 
 ## 🖥️ 프로젝트 소개
-모임 금액 분할 관리 서비스를 제공하는 웹 & 안드로이드 앱
+모임 금액 분할 관리 서비스를 제공하는 웹
+
+### 🧑 참여 인원
+* 황인수(개인 프로젝트)
 
 ### 📆 개발 기간
 * SpringBoot & Web : 2023.12.13 ~ 2023.12.20
-* Android App : 2023.12.20 ~ 
 
 ### ⚙️ 개발 환경
 - `Java 17`
@@ -18,7 +20,6 @@ SpingBoot를 활용한 플랫폼 서비스
 - **Database** : Postgre
 - **ORM** : Hibernate
 - **Web** : `HTML` + `JavaScript` + `CSS`
-- **Android App** : `Kotlin`
 
 ### 🌳 ERD
   ![erd](https://github.com/Insoo-Hwang/NBBANG/assets/70841847/0dc514c3-7665-4507-82a9-65ef0b368cb0)
