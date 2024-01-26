@@ -4,21 +4,24 @@
 SpingBoot를 활용한 플랫폼 서비스
 
 ## 🖥️ 프로젝트 소개
-모임 금액 분할 관리 서비스를 제공하는 웹
+모임 금액 분할 관리 서비스를 제공하는 웹&안드로이드 
 
 ### 🧑 참여 인원
-* 황인수(개인 프로젝트)
+* [황인수](https://github.com/Insoo-Hwang)
+  - Spring + Web 개발
+* [박민성](https://github.com/pms981125)
+  - Android 개발
 
 ### 📆 개발 기간
 * SpringBoot & Web : 2023.12.13 ~ 2023.12.20
+* [Android App](https://github.com/pms981125/NBBANG_APP) : 2024.01.02 ~ 
 
 ### ⚙️ 개발 환경
-- `Java 17`
-- `JDK 17.0.1`
-- **IDE** : IntelliJ
-- **Framework** : SpringBoot 3.2.0
-- **Database** : Postgre
-- **ORM** : Hibernate
+- **Language** : `Java 17`
+- **IDE** : `IntelliJ`
+- **Framework** : `SpringBoot 3.2.0`
+- **Database** : `Postgresql`
+- **ORM** : `Hibernate`
 - **Web** : `HTML` + `JavaScript` + `CSS`
 
 ### 🌳 ERD
