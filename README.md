@@ -6,17 +6,14 @@ SpingBoot를 활용한 플랫폼 서비스
 모임 금액 분할 관리 서비스를 제공하는 웹&안드로이드 
 
 ### 🧑 참여 인원
-* [황인수](https://github.com/Insoo-Hwang)
+* [황인수](https://github.com/Insoo-Hwang) 개인프로젝트
   - Spring + Web 개발
-* [박민성](https://github.com/pms981125)
-  - Android 개발
 
 ### 🎬 프로젝트 기획 동기
 지인들끼리의 모임 회비나 최근 증가한 OTT 공유 계정 정산을 하는 플랫폼 서비스 부재
 
 ### 📆 개발 기간
 * SpringBoot & Web : 2023.12.13 ~ 2023.12.20
-* [Android App](https://github.com/pms981125/NBBANG_APP) : 2024.01.02 ~ 
 
 ### ⚙️ 개발 환경
 - **Language** : `Java 17`
